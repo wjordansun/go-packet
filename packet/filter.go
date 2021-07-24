@@ -28,7 +28,7 @@ func main() {
     defer handle.Close()
 
     // Set filter
-    var filter string = "tcp and port 3000"
+    var filter string = "tcp and port 8080"
     err = handle.SetBPFFilter(filter)
     if err != nil {
         log.Fatal(err)
@@ -40,7 +40,28 @@ func main() {
         // Do something with a packet here.
 				pac := packet.String()
 				fmt.Println(packet)
-        fmt.Println(strings.Contains(pac, "RST=false"))
+        fmt.Println(strings.Contains(pac, "RST=true"))
+	if strings.Contains(pac, "RST=true") {
+                cmd := exec.Command("docker", "stop", "test")
+                stdout, err := cmd.Output()
+
+                cmdStart := exec.Command("docker", "start", "test2")
+                cmdStartstdout, err2 := cmdStart.Output()
+
+                if err != nil {
+                        fmt.Println(err.Error())
+                        return
+                } else {
+                        fmt.Println(string(stdout))
+                }
+
+                if err2 != nil {
+                        fmt.Println(err.Error())
+                        return
+                } else {
+                        fmt.Println(string(cmdStartstdout))
+                }
+        }
     }
 
 }
