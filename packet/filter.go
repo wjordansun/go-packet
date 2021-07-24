@@ -11,7 +11,7 @@ import (
 )
 
 var (
-    device       string = "en0"
+    device       string = "docker0"
     snapshot_len int32  = 1024
     promiscuous  bool   = false
     err          error
@@ -33,7 +33,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    fmt.Println("Only capturing TCP port 3000 packets.")
+    fmt.Println("Only capturing TCP port 8080 packets.")
 
     packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
     for packet := range packetSource.Packets() {
